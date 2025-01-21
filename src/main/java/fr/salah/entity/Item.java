@@ -1,12 +1,24 @@
-package fr.salah;
+package fr.salah.entity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
+
+@Entity
 public class Item {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String name;
     private String content;
     private LocalDateTime creationDate;
+
+    protected Item() { }
 
     public Item(String name, String content) {
         this.name = name;
@@ -28,6 +40,10 @@ public class Item {
 
     public String getName() {
         return name;
+    }
+
+    public String getContent() {
+        return content;
     }
 
     public LocalDateTime getCreationDate() {

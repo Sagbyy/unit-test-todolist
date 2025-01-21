@@ -1,6 +1,9 @@
 package fr.salah;
 
+import fr.salah.entity.Item;
 import fr.salah.exceptions.UserNotValidException;
+import fr.salah.repository.ItemRepository;
+import fr.salah.service.TodoList;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -12,6 +15,16 @@ public class User {
     private LocalDate birthDate;
     private String password;
     private TodoList todoList;
+    private final ItemRepository itemRepository;
+
+    public User(String email, String firstName, String lastName, LocalDate birthDate, String password, ItemRepository itemRepository) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.password = password;
+        this.itemRepository = itemRepository;
+    }
 
     public User(String email, String firstName, String lastName, LocalDate birthDate, String password) {
         this.email = email;
@@ -19,6 +32,7 @@ public class User {
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.password = password;
+        this.itemRepository = null;
     }
 
     public boolean isValidEmail() {
@@ -50,7 +64,8 @@ public class User {
 
     public TodoList createTodoList() throws UserNotValidException {
         if (this.isValid()) {
-            this.todoList = new TodoList(new EmailSenderService());
+//            this.todoList = new TodoList(new EmailSenderService());
+            this.todoList = new TodoList(itemRepository);
             return this.todoList;
         } else throw new UserNotValidException();
     }

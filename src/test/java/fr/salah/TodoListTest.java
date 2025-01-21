@@ -1,9 +1,11 @@
 package fr.salah;
 
+import fr.salah.entity.Item;
 import fr.salah.exceptions.TodoListException;
+import fr.salah.repository.ItemRepository;
+import fr.salah.service.TodoList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +23,10 @@ class TodoListTest {
         EmailSenderService emailSenderService = mock(EmailSenderService.class);
         when(emailSenderService.sendEmail()).thenReturn(true);
 
-        this.todoList = spy(new TodoList(emailSenderService));
+        ItemRepository itemRepository = mock(ItemRepository.class);
+        when(itemRepository.findAll()).thenReturn(new ArrayList<>());
+
+        this.todoList = spy(new TodoList(itemRepository));
 
         doNothing().when(todoList).save(any());
     }

@@ -1,22 +1,31 @@
-package fr.salah;
+package fr.salah.service;
 
+import fr.salah.entity.Item;
 import fr.salah.exceptions.TodoListException;
+import fr.salah.repository.ItemRepository;
+import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class TodoList {
     private List<Item> items;
-    private EmailSenderService emailSenderService;
+    private final ItemRepository itemRepository;
 
-    public TodoList(EmailSenderService emailSenderService) {
+    public TodoList(ItemRepository itemRepository) {
+        this.itemRepository = itemRepository;
         this.items = new ArrayList<>();
-        this.emailSenderService = emailSenderService;
     }
 
     public void addItem(Item item) throws TodoListException {
+        System.out.println("Adding item " + item.getName());
+        if (item == null) {
+            throw new TodoListException("Item is null, please provide a valid item like this : new Item(\"name\", \"content\")");
+        }
+
         if (this.items.size() >= 10) {
             throw new TodoListException("Todo list is full");
         }
@@ -35,11 +44,16 @@ public class TodoList {
         }
 
         items.add(item);
-        this.save(item);
+        itemRepository.save(item);
+//        this.save(item);
 
-        if (items.size() == 8) {
-            this.emailSenderService.sendEmail();
-        }
+//        if (items.size() == 8) {
+//            this.emailSenderService.sendEmail();
+//        }
+    }
+
+    public List<Item> getItems() {
+        return itemRepository.findAll();
     }
 
     public void save(Item item) throws TodoListException {

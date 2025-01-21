@@ -1,6 +1,7 @@
 package fr.salah;
 
 import fr.salah.exceptions.UserNotValidException;
+import fr.salah.repository.ItemRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
